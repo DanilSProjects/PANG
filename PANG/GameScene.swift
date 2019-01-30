@@ -26,13 +26,29 @@ class GameScene: SKScene {
         
         ball.physicsBody?.applyImpulse(CGVector(dx: 20, dy: 20))
         
-        let border = SKPhysicsBody(edgeLoopFrom: self.frame) // Border around scene, making physics body programmatically
+        let border = SKPhysicsBody(edgeLoopFrom: self.frame) // border around scene, making physics body programmatically
         border.friction = 0
         border.restitution = 1
         self.physicsBody = border
     }
     
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        // happens when finger put down
+        for touch in touches {
+            let location = touch.location(in: self) // gets location of finger inside of view
+            player.run(SKAction.moveTo(x: location.x, duration: 0.2)) // follows finger
+        }
+    }
+    
+    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+        // happens when finger dragged
+        for touch in touches {
+            let location = touch.location(in: self) // gets location of finger inside of view
+            player.run(SKAction.moveTo(x: location.x, duration: 0.2)) // follows finger
+        }
+    }
+    
     override func update(_ currentTime: TimeInterval) {
-        // Called before each frame is rendered
+        enemy.run(.moveTo(x: ball.position.x, duration: 1)) // enemy follows ball
     }
 }
